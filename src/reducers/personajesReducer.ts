@@ -6,12 +6,14 @@ export interface PersonajesState {
   status: "IDLE" | "LOADING" | "COMPLETED" | "FAILED";
   characters: Personaje[];
   errorMessage: string | null;
+  favorites: Personaje[];
 }
 
 const initialState: PersonajesState = {
   status: "IDLE",
   characters: [],
-  errorMessage: null
+  errorMessage: null,
+  favorites: []
 };
 
 const personajesReducer: Reducer<PersonajesState, CharacterActions> = (
@@ -38,7 +40,11 @@ const personajesReducer: Reducer<PersonajesState, CharacterActions> = (
         status: "FAILED",
         errorMessage: action.error
       };
-    default:
+      case"ADD_FAV_CHARACTER":
+      return {...state, favorites: [...state.favorites.filter(personaje => personaje.name !== action.payload.name),action.payload]};
+      case "DELETE_FAV":
+      return{...state, favorites:[]}
+      default:
       return state;
   }
 };

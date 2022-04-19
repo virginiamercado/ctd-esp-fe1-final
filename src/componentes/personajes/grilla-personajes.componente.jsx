@@ -12,26 +12,33 @@ import TarjetaPersonaje from './tarjeta-personaje.componente';
  * 
  * @returns un JSX element 
  */
+
+
+
 const GrillaPersonajes = () => {
 
     const dispatch = useDispatch();
+    const {characters,status,favorites} = useSelector((state) => state.personajes)
+
 
     useEffect(() =>{
         dispatch(fetchCharactersThunk(""));
+
     }, []);
-    const {characters,status} = useSelector((state) => state.personajes)
 
 
     if (status === "LOADING") return <div>Cargando personajes...</div>;
     if (status === "FAILED") return <div>No se pudo cargar los personajes.</div>;
     if (!characters || characters.length === 0) return <></>;
 
-    console.log(characters[0].name)
+
+
+
     return (
         <>
     <div className="grilla-personajes">
         <>
-            {characters.map((item, index)=><TarjetaPersonaje name= {item.name} index= {item.index} image = {item.image}/>)}
+            {characters.map((item, index)=><TarjetaPersonaje item={item} key={index} name= {item.name} image = {item.image} />)}
         
 </>
     </div>

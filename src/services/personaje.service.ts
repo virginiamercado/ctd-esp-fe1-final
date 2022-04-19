@@ -10,4 +10,7 @@ export const buscarPersonajesAPI = async (
   return fetch(`https://rickandmortyapi.com/api/character/${params}`)
     .then((data) => data.json())
     .then((data) => data.results);
+
 };
+
+

@@ -18,6 +18,34 @@ interface FetchCharactersFailedAction extends Action {
   error: string;
 }
 
+//AGREGAR A FAVORITOS
+interface addToFavoritesAction extends Action {
+  type: "ADD_FAV_CHARACTER";
+  payload: Personaje;
+  }
+
+  interface deleteAllFavoritesAction extends Action {
+    type: "DELETE_FAV";
+    }
+
+export const addToFavorites: ActionCreator<addToFavoritesAction> = (
+    personaje:Personaje
+  ) => {
+    return {
+      type: "ADD_FAV_CHARACTER",
+      payload: personaje
+    };
+  }; 
+
+  export const deleteAllFavorites: ActionCreator<deleteAllFavoritesAction> = (
+  ) => {
+    return {
+      type: "DELETE_FAV",
+    };
+  }; 
+
+
+
 const fetchCharactersPending: ActionCreator<FetchCharactersPendingAction> = (
   query: string
 ) => {
@@ -48,7 +76,10 @@ const fetchCharactersFailure: ActionCreator<FetchCharactersFailedAction> = (
 export type CharacterActions =
   | ReturnType<typeof fetchCharactersPending>
   | ReturnType<typeof fetchCharactersSuccess>
-  | ReturnType<typeof fetchCharactersFailure>;
+  | ReturnType<typeof fetchCharactersFailure>
+  | ReturnType<typeof addToFavorites>
+  | ReturnType<typeof deleteAllFavorites>;
+
 
 interface FetchCharactersThunkAction
   extends ThunkAction<void, IRootState, unknown, CharacterActions> {}
