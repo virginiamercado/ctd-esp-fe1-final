@@ -1,7 +1,8 @@
 import BotonFavorito from '../botones/boton-favorito.componente';
 import './tarjeta-personaje.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { addToFavorites, fetchCharactersThunk } from '../../actions/actions';
+import { addToFavorites, deleteAllFavorites, fetchCharactersThunk, deleteFromFavorites } from '../../actions/actions';
+import { useState } from 'react';
 
 
 
@@ -15,21 +16,20 @@ import { addToFavorites, fetchCharactersThunk } from '../../actions/actions';
  */
 const TarjetaPersonaje = (props) => {
     const {favorites} = useSelector((state) => state.personajes)
+    const [marcarEstrella, setmarcarEstrella] = useState(favorites.find((favorito) => favorito.id === props.item.id)? true : false)
     const dispatch = useDispatch();
     
     const onClickPersonaje= (item) => {
-        dispatch(addToFavorites(item))
-        console.log(item.name)
-        console.log(item)
-        console.log(favorites)
-        props.esFavorito = true   
+        marcarEstrella? dispatch(deleteFromFavorites(item)):
+        dispatch(addToFavorites(item));
+        setmarcarEstrella(!marcarEstrella)
     }
-
+console.log(props.item.id)
     return <div className="tarjeta-personaje">
         <img src={props.image} alt={props.name}/>
         <div className="tarjeta-personaje-body">
             <span>{props.name}</span>
-            <BotonFavorito esFavorito={false} onClick={() => onClickPersonaje(props.item)} item={props.item}/>
+            <BotonFavorito esFavorito={marcarEstrella} onClick={() => onClickPersonaje(props.item)} item={props.item}/>
         </div>
     </div>
 }

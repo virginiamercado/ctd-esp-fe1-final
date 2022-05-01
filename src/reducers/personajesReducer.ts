@@ -7,13 +7,18 @@ export interface PersonajesState {
   characters: Personaje[];
   errorMessage: string | null;
   favorites: Personaje[];
+  /* selectedCharacter: Personaje | null */
+  inputSearch: string | null
+
 }
 
 const initialState: PersonajesState = {
   status: "IDLE",
   characters: [],
   errorMessage: null,
-  favorites: []
+  favorites: [],
+  /* selectedCharacter: null, */
+  inputSearch: ""
 };
 
 const personajesReducer: Reducer<PersonajesState, CharacterActions> = (
@@ -26,7 +31,8 @@ const personajesReducer: Reducer<PersonajesState, CharacterActions> = (
         ...state,
         status: "LOADING",
         characters: [],
-        errorMessage: null
+        errorMessage: null,
+        inputSearch: action.query
       };
     case "FETCH_CHARACTERS_SUCCESS":
       return {
@@ -42,11 +48,18 @@ const personajesReducer: Reducer<PersonajesState, CharacterActions> = (
       };
       case"ADD_FAV_CHARACTER":
       return {...state, favorites: [...state.favorites.filter(personaje => personaje.name !== action.payload.name),action.payload]};
+      case "DELETE_FAV_CHARACTER":
+      return {...state,favorites: [...state.favorites.filter((personaje) => personaje.id !== action.payload.id),]};
       case "DELETE_FAV":
-      return{...state, favorites:[]}
+      return{...state, favorites:[]};
+      /* case "SELECTED_CHARACTER":
+      return {...state,
+        selectedCharacter: action.payload
+      }; */
       default:
       return state;
   }
+  
 };
 
 

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchCharactersThunk } from '../../actions/actions';
 import './grilla-personajes.css';
@@ -15,30 +15,19 @@ import TarjetaPersonaje from './tarjeta-personaje.componente';
 
 
 
-const GrillaPersonajes = () => {
-
+const GrillaPersonajes = ({characters, status}) => {
     const dispatch = useDispatch();
-    const {characters,status,favorites} = useSelector((state) => state.personajes)
 
-
-    useEffect(() =>{
-        dispatch(fetchCharactersThunk(""));
-
-    }, []);
-
-
-    if (status === "LOADING") return <div>Cargando personajes...</div>;
-    if (status === "FAILED") return <div>No se pudo cargar los personajes.</div>;
+    if (status === "LOADING") return <div>Loading .. </div>;
+    if (status === "FAILED") return <div>No se pudieron cargar los personajes</div>;
     if (!characters || characters.length === 0) return <></>;
-
-
 
 
     return (
         <>
     <div className="grilla-personajes">
         <>
-            {characters.map((item, index)=><TarjetaPersonaje item={item} key={index} name= {item.name} image = {item.image} />)}
+            {characters.map((item, index)=> (<TarjetaPersonaje item={item} key={index} name= {item.name} image = {item.image} />))}
         
 </>
     </div>

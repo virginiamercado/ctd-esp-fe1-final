@@ -18,40 +18,57 @@ interface FetchCharactersFailedAction extends Action {
   error: string;
 }
 
-//AGREGAR A FAVORITOS
 interface addToFavoritesAction extends Action {
   type: "ADD_FAV_CHARACTER";
   payload: Personaje;
-  }
+}
 
-  interface deleteAllFavoritesAction extends Action {
-    type: "DELETE_FAV";
-    }
+interface deleteFromFavoritesAction extends Action {
+  type: "DELETE_FAV_CHARACTER";
+  payload: Personaje;
+}
+
+interface deleteAllFavoritesAction extends Action {
+  type: "DELETE_FAV";
+}
+
+/*     interface selectedCharacterAction extends Action {
+      type: "SELECTED_CHARACTER";
+      payload: Personaje;
+      } */
 
 export const addToFavorites: ActionCreator<addToFavoritesAction> = (
-    personaje:Personaje
-  ) => {
-    return {
-      type: "ADD_FAV_CHARACTER",
-      payload: personaje
-    };
-  }; 
+  personaje: Personaje
+) => {
+  return {
+    type: "ADD_FAV_CHARACTER",
+    payload: personaje,
+  };
+};
 
-  export const deleteAllFavorites: ActionCreator<deleteAllFavoritesAction> = (
-  ) => {
-    return {
-      type: "DELETE_FAV",
-    };
-  }; 
+export const deleteFromFavorites: ActionCreator<deleteFromFavoritesAction> = (
+  personaje: Personaje
+) => {
+  return {
+    type: "DELETE_FAV_CHARACTER",
+    payload: personaje,
+  };
+};
 
-
+export const deleteAllFavorites: ActionCreator<
+  deleteAllFavoritesAction
+> = () => {
+  return {
+    type: "DELETE_FAV",
+  };
+};
 
 const fetchCharactersPending: ActionCreator<FetchCharactersPendingAction> = (
   query: string
 ) => {
   return {
     type: "FETCH_CHARACTERS_PENDING",
-    query: query
+    query: query,
   };
 };
 
@@ -60,7 +77,7 @@ const fetchCharactersSuccess: ActionCreator<FetchCharactersSuccessAction> = (
 ) => {
   return {
     type: "FETCH_CHARACTERS_SUCCESS",
-    characters: characters
+    characters: characters,
   };
 };
 
@@ -69,7 +86,7 @@ const fetchCharactersFailure: ActionCreator<FetchCharactersFailedAction> = (
 ) => {
   return {
     type: "FETCH_CHARACTERS_FAILED",
-    error: error
+    error: error,
   };
 };
 
@@ -78,25 +95,23 @@ export type CharacterActions =
   | ReturnType<typeof fetchCharactersSuccess>
   | ReturnType<typeof fetchCharactersFailure>
   | ReturnType<typeof addToFavorites>
+  | ReturnType<typeof deleteFromFavorites>
   | ReturnType<typeof deleteAllFavorites>;
-
 
 interface FetchCharactersThunkAction
   extends ThunkAction<void, IRootState, unknown, CharacterActions> {}
 
-  export const fetchCharactersThunk = (
-    query: string
-  ): FetchCharactersThunkAction => {
-    return async (dispatch, getState) => {
-      // Marcamos el state como loading
-      dispatch(fetchCharactersPending(query));
-      //
-      try {
-        const personajes: Personaje[] = await buscarPersonajesAPI(query);
-        dispatch(fetchCharactersSuccess(personajes));
-      } catch (e) {
-        dispatch(fetchCharactersFailure(e));
-      }
-    };
+export const fetchCharactersThunk = (
+  query: string,
+  page?: number
+): FetchCharactersThunkAction => {
+  return async (dispatch) => {
+    dispatch(fetchCharactersPending(query));
+    try {
+      const personajes: Personaje[] = await buscarPersonajesAPI(query, page);
+      dispatch(fetchCharactersSuccess(personajes));
+    } catch (e) {
+      dispatch(fetchCharactersFailure(e));
+    }
   };
-  
+};
