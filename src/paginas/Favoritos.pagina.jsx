@@ -1,5 +1,4 @@
 import GrillaPersonajes from "../componentes/personajes/grilla-personajes.componente";
-import TarjetaPersonaje from "../componentes/personajes/tarjeta-personaje.componente";
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteAllFavorites } from '../actions/actions';
 
@@ -15,6 +14,11 @@ const PaginaFavoritos = () => {
     const {favorites} = useSelector((state) => state.personajes);
 
     const dispatch = useDispatch();
+
+    /**
+     * Función que vacía el array de FAVORITOS
+     * @returns void
+     * */
     const onClickDeleteFavorites = () => {
         dispatch(deleteAllFavorites())
         alert("Favoritos eliminados")

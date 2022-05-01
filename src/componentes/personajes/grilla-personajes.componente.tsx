@@ -1,24 +1,23 @@
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchCharactersThunk } from '../../actions/actions';
+import { FC } from 'react';
+import Personaje from '../../types/personajes.types';
 import './grilla-personajes.css';
 import TarjetaPersonaje from './tarjeta-personaje.componente';
 
 /**
  * Grilla de personajes para la pagina de inicio
  * 
- * Deberás agregar las funciones necesarias para mostrar y paginar los personajes
- * 
- * 
- * @returns un JSX element 
+ *  * 
+ * @returns Componentes TarjetaPersonaje por cada personaje. En caso de existir un filtro, devuelve los personajes según ese filtro.
  */
 
+interface GrillaPersonasProps{
+    characters: Personaje[],
+    status: string
+}
 
+const GrillaPersonajes:FC<GrillaPersonasProps> = ({characters, status}) => {
 
-const GrillaPersonajes = ({characters, status}) => {
-    const dispatch = useDispatch();
-
-    if (status === "LOADING") return <div>Loading .. </div>;
+    if (status === "LOADING") return <div>Loading ... </div>;
     if (status === "FAILED") return <div>No se pudieron cargar los personajes</div>;
     if (!characters || characters.length === 0) return <></>;
 

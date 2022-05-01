@@ -7,7 +7,6 @@ export interface PersonajesState {
   characters: Personaje[];
   errorMessage: string | null;
   favorites: Personaje[];
-  /* selectedCharacter: Personaje | null */
   inputSearch: string | null
 
 }
@@ -17,7 +16,6 @@ const initialState: PersonajesState = {
   characters: [],
   errorMessage: null,
   favorites: [],
-  /* selectedCharacter: null, */
   inputSearch: ""
 };
 
@@ -52,10 +50,6 @@ const personajesReducer: Reducer<PersonajesState, CharacterActions> = (
       return {...state,favorites: [...state.favorites.filter((personaje) => personaje.id !== action.payload.id),]};
       case "DELETE_FAV":
       return{...state, favorites:[]};
-      /* case "SELECTED_CHARACTER":
-      return {...state,
-        selectedCharacter: action.payload
-      }; */
       default:
       return state;
   }

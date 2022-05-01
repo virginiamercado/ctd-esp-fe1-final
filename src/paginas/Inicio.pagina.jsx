@@ -2,7 +2,6 @@ import Filtros from "../componentes/personajes/filtros.componente";
 import GrillaPersonajes from "../componentes/personajes/grilla-personajes.componente";
 import Paginacion from "../componentes/paginacion/paginacion.componente";
 import { useSelector, useDispatch } from "react-redux";
-import { getCharacters } from "../services/personaje.service";
 import { fetchCharactersThunk } from "../actions/actions";
 import { useEffect, useState } from "react";
 
@@ -15,22 +14,27 @@ import { useEffect, useState } from "react";
  * @returns la pagina de inicio
  */
 const PaginaInicio = () => {
-  const { characters, status, favorites, inputSearch } = useSelector(
+  const { characters, status, inputSearch } = useSelector(
     (state) => state.personajes
   );
   const [page, setPage] = useState(1);
   const dispatch = useDispatch();
 
-  const cleanSearchInput = () => {
+    const onchangeFunction = async (searchedValue) => {
+    dispatch(fetchCharactersThunk(searchedValue));
+  };
+
+  /**
+   * Función que elimina el input de la barra de filtro.
+   * @returns void
+   * */
+   const cleanSearchInput = () => {
     dispatch(fetchCharactersThunk(""));
   };
 
-  const onchangeFunction = async (searchedValue) => {
-    dispatch(fetchCharactersThunk(searchedValue));
-  };
   useEffect(() => {
     dispatch(fetchCharactersThunk(inputSearch, page));
-  }, [dispatch, page]);
+  }, [dispatch, page,]);
 
   return (
     <div className="container">
@@ -52,22 +56,3 @@ const PaginaInicio = () => {
 };
 
 export default PaginaInicio;
-
-/* 
-    const [state, setState] = useState({})
-
-    state ={ data: [], next: "", previous: ""}
-
-
-    getCharacters 
-    const nextPage = () =>  {
-        const { data,next, previous} = res.data; 
-    axios.get(next) 
-    .then(r => setState({data:results, next, previous}) )}
-    
-
-    axios.get("https://rickandmortyapi.com/api/character")
-    .then( res => {
-        const { data,next, previous} = res.data;
-        setState({data:results, next, previous})}
-    ) */

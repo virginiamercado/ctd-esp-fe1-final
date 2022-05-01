@@ -1,20 +1,16 @@
+import {FC} from 'react';
 import './paginacion.css';
-import { useDispatch, useSelector } from 'react-redux';
-import { useState, } from 'react';
-import { getCharacters } from "../../services/personaje.service";
-import React from 'react';
 
-
-
+interface PaginacionProps {
+    page: number
+    setPage: (page:number)=>void
+}
 /**
  * Componente que contiene los botones para paginar
  * 
- * Deberás agregar las propiedades necesarias para que funcione correctamente
- * 
- * 
  * @returns un JSX element 
  */
-const Paginacion = ({page, setPage}) => {
+const Paginacion:FC<PaginacionProps> = ({page, setPage}) => {
 
 
     return <div className="paginacion">

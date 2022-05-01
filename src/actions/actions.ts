@@ -32,11 +32,6 @@ interface deleteAllFavoritesAction extends Action {
   type: "DELETE_FAV";
 }
 
-/*     interface selectedCharacterAction extends Action {
-      type: "SELECTED_CHARACTER";
-      payload: Personaje;
-      } */
-
 export const addToFavorites: ActionCreator<addToFavoritesAction> = (
   personaje: Personaje
 ) => {
